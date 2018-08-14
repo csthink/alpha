@@ -40,6 +40,9 @@ php artisan migrate:rollback
 
 * 数据库重置操作
 php artisan migrate:refresh
+
+* 查看已添加的路由
+php artisan route:list
 ```
 
 

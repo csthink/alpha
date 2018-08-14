@@ -31,3 +31,10 @@ Route::get('/users/{user}/edit', 'UsersController@edit')->name('users.edit');
 Route::patch('/users/{user}', 'UsersController@update')->name('users.update');
 Route::delete('/users/{user}', 'UsersController@destroy')->name('users.destroy');
 */
+
+// 渲染登录页面
+Route::get('login', 'SessionsController@create')->name('login');
+// 登录操作
+Route::post('login', 'SessionsController@store')->name('login');
+// 登出操作
+Route::delete('logout', 'SessionsController@destroy')->name('logout');

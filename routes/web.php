@@ -11,6 +11,7 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// 静态页面路由
+Route::get('/', 'StaticPagesController@home')->name('home');
+Route::get('help', 'StaticPagesController@help')->name('help');
+Route::get('about', 'StaticPagesController@about')->name('about');

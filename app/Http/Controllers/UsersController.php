@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
+use Mail;
 use Illuminate\Http\Request;
 use App\Models\User;
-use Auth;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class UsersController extends Controller
@@ -12,7 +13,7 @@ class UsersController extends Controller
     public function __construct()
     {
         $this->middleware('auth', [
-            'except' => ['create', 'show', 'store']
+            'except' => ['create', 'show', 'store', 'confirmEmail']
         ]);
 
         $this->middleware('guest', [
@@ -26,8 +27,12 @@ class UsersController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(10);
-        return view('users.index', compact('users'));
+        if (Auth::user()->is_admin) {
+            $users = User::paginate(10);
+            return view('users.index', compact('users'));
+        } else {
+            abort(403);
+        }
     }
 
 
@@ -51,7 +56,7 @@ class UsersController extends Controller
     }
 
     /**
-     * 注册用户
+     * 执行用户注册操作
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -69,10 +74,24 @@ class UsersController extends Controller
             'password' => bcrypt($request->password),
         ]);
 
+        $this->sendEmailConfirmationTo($user);
+        session()->flash('success', '验证邮件已发送到你的注册邮箱上，请注意查收。');
+        return redirect('/');
         // 自动登录
-        Auth::login($user);
-        session()->flash('success', '欢迎，您将在这里开启一段新的征途~');
-        return redirect()->route('users.show', [$user]);
+        //Auth::login($user);
+        // session()->flash('success', '欢迎，您将在这里开启一段新的征途~');
+        //return redirect()->route('users.show', [$user]);
+    }
+
+    private function sendEmailConfirmationTo($user)
+    {
+        $view = 'emails.confirm';
+        $data = compact('user');
+        $to = $user->email;
+        $subject = "感谢注册 csthink 应用！请确认你的邮箱。";
+        Mail::send($view, $data, function ($message) use ($to, $subject) {
+            $message->to($to)->subject($subject);
+        });
     }
 
     /**
@@ -143,4 +162,26 @@ class UsersController extends Controller
         }
 
     }
+
+    /**
+     * 激活用户账号
+     * @param $token
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function confirmEmail($token)
+    {
+        $user = User::where('activation_token', $token)->firstOrFail();
+
+        // 更新账号激活状态
+        $user->activation_token = null;
+        $user->activated = true;
+        $user->save();
+
+        // 自动登录
+        Auth::login($user);
+
+        session()->flash('success', $user->name .  '欢迎您，账号激活成功！');
+        return redirect()->route('users.show', [$user]);
+    }
+
 }

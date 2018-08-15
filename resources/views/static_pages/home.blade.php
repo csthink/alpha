@@ -23,7 +23,7 @@
         </div>
     @else
         <div class="jumbotron">
-            <h1>Hello Laravel</h1>
+            <h1>Hello Geek</h1>
             <p class="lead">
                 你现在所看到的是 <a href="#">Alpha</a> 的项目主页。
             </p>

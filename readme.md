@@ -31,6 +31,7 @@ php artisan make:controller UserController
 
 * 创建模型文件
 php artisan make:model Models/Users
+php artisan make:model Models/Status -m 创建模型文件同时创建数据库迁移文件
 
 * 创建数据库迁移文件 
 php artisan make:migration add_is_admin_to_users_table --table=users
@@ -53,8 +54,18 @@ php artisan make:policy UserPolicy
 * 创建seeder类用于填充数据库假数据
 php artisan make:seeder UserTableSeeder
 
-* 清除数据库数据，执行假数据填充
+* 清除数据库数据 执行假数据填充
 php artisan migrate:refresh --seed 
+
+
+* 密码重置邮件相关 - 生成消息通知文件
+php artisan make:notification ResetPassword
+
+* 发布密码重置的 Email 视图 拷贝了vendor下的目录文件到资源目录下的视图目录
+php artisan vendor:publish --tag=laravel-notifications
+
+* 定义用来生成微博假数据的模型工厂
+php artisan make:factory StatusFactory
 
 ```
 

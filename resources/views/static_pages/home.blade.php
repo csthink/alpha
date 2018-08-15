@@ -16,6 +16,9 @@
                 <section class="user_info">
                     @include('common._user_info', ['user' => Auth::user()])
                 </section>
+                <section class="stats">
+                    @include('common._stats', ['user' => Auth::user()])
+                </section>
             </aside>
         </div>
     @else

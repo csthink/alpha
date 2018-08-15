@@ -32,6 +32,9 @@ php artisan make:controller UserController
 * 创建模型文件
 php artisan make:model Models/Users
 
+* 创建数据库迁移文件 
+php artisan make:migration add_is_admin_to_users_table --table=users
+
 * 执行数据迁移
 php artisan migrate
 
@@ -43,6 +46,26 @@ php artisan migrate:refresh
 
 * 查看已添加的路由
 php artisan route:list
+
+* 添加授权策略类文件 用于管理用户模型的授权
+php artisan make:policy UserPolicy
+
+* 创建seeder类用于填充数据库假数据
+php artisan make:seeder UserTableSeeder
+
+* 清除数据库数据，执行假数据填充
+php artisan migrate:refresh --seed 
+
+```
+
+## 分页获取
+```php
+// 控制器分页获取数据
+$users = User::paginate(10);
+return view('users.index', compact('users'));
+
+// blade 模板渲染分页组件(渲染分页视图的代码必须使用 {!! !!} 语法，而不是 {{　}}，这样生成 HTML 链接才不会被转义)
+{!! $users->render() !!}
 ```
 
 

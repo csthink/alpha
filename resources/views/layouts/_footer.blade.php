@@ -3,7 +3,7 @@
         <small class="slogon">
             <img class="brand-icon" src="https://lccdn.phphub.org/uploads/images/201612/12/1/iq7WQc2iuW.png?imageView2/1/w/34/h/34">
             <a href="{{ route('home') }}">
-                随时思考 | csthink
+                随时思考 | csthink 献给所有热爱编程的你们 Geek 们
             </a>
         </small>
         <nav>

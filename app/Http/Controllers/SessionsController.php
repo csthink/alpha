@@ -16,6 +16,7 @@ class SessionsController extends Controller
 
     /**
      * 渲染用户登录页面
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
@@ -25,6 +26,7 @@ class SessionsController extends Controller
 
     /**
      * 执行用户登录操作
+     *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -56,6 +58,7 @@ class SessionsController extends Controller
 
     /**
      * 执行用户登出操作
+     *
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy()

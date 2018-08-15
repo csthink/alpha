@@ -23,6 +23,7 @@ class UsersController extends Controller
 
     /**
      * 用户列表页
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index()
@@ -38,6 +39,7 @@ class UsersController extends Controller
 
     /**
      * 渲染用户注册页面
+     *
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function create()
@@ -47,16 +49,19 @@ class UsersController extends Controller
 
     /**
      * 渲染用户中心页面
+     *
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function show(User $user)
     {
-        return view('users.show', compact('user'));
+        $statuses = $user->statuses()->orderBy('created_at', 'desc')->paginate(10);
+        return view('users.show', compact('user', 'statuses'));
     }
 
     /**
      * 执行用户注册操作
+     *
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -69,9 +74,9 @@ class UsersController extends Controller
         ]);
 
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'password' => bcrypt($request['password']),
         ]);
 
         $this->sendEmailConfirmationTo($user);
@@ -96,6 +101,7 @@ class UsersController extends Controller
 
     /**
      * 渲染修改个人资料页面
+     *
      * @param User $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -111,6 +117,7 @@ class UsersController extends Controller
 
     /**
      * 执行更新个人资料操作
+     *
      * @param User $user
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
@@ -129,9 +136,9 @@ class UsersController extends Controller
              */
             $this->authorize('update', $user);
             $data = [];
-            $data['name'] = $request->name;
-            if ($request->password) {
-                $data['password'] = bcrypt($request->password);
+            $data['name'] = $request['name'];
+            if ($request['password']) {
+                $data['password'] = bcrypt($request['password']);
             }
 
             $user->update($data);
@@ -144,6 +151,7 @@ class UsersController extends Controller
 
     /**
      * 删除用户
+     *
      * @param User $user
      * @return \Illuminate\Http\RedirectResponse
      */
@@ -165,6 +173,7 @@ class UsersController extends Controller
 
     /**
      * 激活用户账号
+     *
      * @param $token
      * @return \Illuminate\Http\RedirectResponse
      */

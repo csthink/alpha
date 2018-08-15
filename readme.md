@@ -31,6 +31,7 @@ php artisan make:controller UserController
 
 * 创建模型文件
 php artisan make:model Models/Users
+php artisan make:model Models/Status -m 创建模型文件同时创建数据库迁移文件
 
 * 创建数据库迁移文件 
 php artisan make:migration add_is_admin_to_users_table --table=users
@@ -63,6 +64,8 @@ php artisan make:notification ResetPassword
 * 发布密码重置的 Email 视图 拷贝了vendor下的目录文件到资源目录下的视图目录
 php artisan vendor:publish --tag=laravel-notifications
 
+* 定义用来生成微博假数据的模型工厂
+php artisan make:factory StatusFactory
 
 ```
 

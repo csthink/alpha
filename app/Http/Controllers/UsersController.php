@@ -28,12 +28,8 @@ class UsersController extends Controller
      */
     public function index()
     {
-        if (Auth::user()->is_admin) {
-            $users = User::paginate(10);
-            return view('users.index', compact('users'));
-        } else {
-            abort(403);
-        }
+        $users = User::paginate(10);
+        return view('users.index', compact('users'));
     }
 
 
@@ -193,4 +189,29 @@ class UsersController extends Controller
         return redirect()->route('users.show', [$user]);
     }
 
+    /**
+     * 显示用户的关注人列表
+     *
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function followings(User $user)
+    {
+        $users = $user->followings()->paginate(10);
+        $title = '关注的人';
+        return view('users.show_follow', compact('users', 'title'));
+    }
+
+    /**
+     * 显示用户的粉丝列表
+     *
+     * @param User $user
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function followers(User $user)
+    {
+        $users = $user->followers()->paginate(10);
+        $title = '粉丝';
+        return view('users.show_follow', compact('users', 'title'));
+    }
 }

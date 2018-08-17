@@ -16,13 +16,16 @@
                 <section class="user_info">
                     @include('common._user_info', ['user' => Auth::user()])
                 </section>
+                <section class="stats">
+                    @include('common._stats', ['user' => Auth::user()])
+                </section>
             </aside>
         </div>
     @else
         <div class="jumbotron">
-            <h1>Hello Laravel</h1>
+            <h1>Hello Geek</h1>
             <p class="lead">
-                你现在所看到的是 <a href="#">Laravel Alpha</a> 的项目主页。
+                你现在所看到的是 <a href="#">Alpha</a> 的项目主页。
             </p>
             <p>
                 一切，将从这里开始。
